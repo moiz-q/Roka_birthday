@@ -244,7 +244,10 @@ h1 { line-height: 1; }
   width: 52px; height: 52px;
   display: grid !important;
   place-items: center;
-  font-size: 26px;
+  font-family: "Great Vibes", cursive;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--cream);
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #a83a28, var(--maroon) 70%);
   box-shadow: 0 3px 8px rgba(0,0,0,0.35), inset 0 -2px 4px rgba(0,0,0,0.3);
@@ -280,14 +283,6 @@ h1 { line-height: 1; }
   animation: unfold 0.8s cubic-bezier(.2,.8,.2,1) both;
 }
 .letter[hidden] { display: none; }
-.letter::before {
-  content: "🍁";
-  position: absolute;
-  top: 14px; right: 18px;
-  font-size: 1.6rem;
-  opacity: 0.85;
-  transform: rotate(18deg);
-}
 .letter p { margin: 0 0 1em; }
 .letter .greeting {
   font-family: "Great Vibes", cursive;
@@ -425,8 +420,13 @@ h1 { line-height: 1; }
   align-items: center;
   justify-content: space-evenly;
 }
-.leaf-deco { font-size: 1.5rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25)); }
-.leaf-deco:nth-child(2) { transform: rotate(-15deg); }
+.tier.bottom .ribbon {
+  width: 100%;
+  height: 10px;
+  background: var(--cream);
+  opacity: 0.85;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.12);
+}
 
 .plate {
   width: 120%;

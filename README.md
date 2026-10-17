@@ -1,13 +1,13 @@
-# Happy Birthday, Roka 🍂
+# Happy Birthday, Roka
 
-A small autumn-themed birthday page. Plain HTML, CSS and JavaScript, no build step, so GitHub Pages can serve it as is.
+A small birthday page with warm autumn colors. Plain HTML, CSS and JavaScript, no build step, so GitHub Pages can serve it as is.
 
 ## What's on the page
 
-- Falling autumn leaves in the background (tap anywhere for a burst of leaves)
+- A few leaves drifting gently in the background
 - An envelope that opens into a personal letter
 - A cake with candles to blow out
-- A set of autumn birthday wishes
+- A set of birthday wishes
 
 Works on phones and desktops, and respects the "reduce motion" accessibility setting.
 
