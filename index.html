@@ -16,7 +16,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -56,21 +56,39 @@
 
         <article class="letter" id="letterCard" hidden>
           <!-- ✏️ EDIT YOUR MESSAGE HERE -->
-          <p class="greeting">Dear Roka,</p>
           <p>
-            Happy birthday! I hope today feels as special as you make the
-            people around you feel, every single day.
+            Happiest birthday to the person I genuinely consider mah bestie! I truly
+            am glad that you convinced Leena one day to add me to the server, so I
+            got to meet all of these amazing people, especially you.
           </p>
           <p>
-            May it be full of good food, long laughs, and people who remind
-            you how loved you are. Thank you for being exactly who you are.
+            I feel like there's a hundred different things I could say to you right
+            now, but after the past few months of talking to you, I feel like I've
+            already said most of them.
           </p>
-          <p>
-            Here's to a beautiful new year of your life.
-          </p>
-          <p class="signoff">With love,<br /><span>Moiz</span></p>
         </article>
       </div>
+    </section>
+
+    <!-- ============ MOMENTS ============ -->
+    <!-- Photos and captions live in memories.js -->
+    <section id="moments" class="section moments">
+      <p class="lead">
+        So instead of talking about it, I'm just gonna revisit some of those
+        fav moments with you.
+      </p>
+
+      <div class="carousel" id="carousel" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Our favorite moments">
+        <div class="track" id="track"></div>
+        <button class="nav prev" id="prevBtn" aria-label="Previous moment">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="nav next" id="nextBtn" aria-label="Next moment">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="dots" id="dots"></div>
+      <p class="hint small-hint">Swipe or use the arrows · tap a photo to see it bigger</p>
     </section>
 
     <!-- ============ CAKE ============ -->
@@ -95,24 +113,23 @@
       <p class="wish-msg" id="wishMsg" aria-live="polite"></p>
     </section>
 
-    <!-- ============ WISHES ============ -->
-    <section class="section">
-      <h2>Wishing you</h2>
-      <div class="wishes">
-        <div class="wish"><span class="icon">☕</span><h3>Slow mornings</h3><p>Good coffee, soft light, and nowhere you have to rush to.</p></div>
-        <div class="wish"><span class="icon">✈️</span><h3>New adventures</h3><p>Places to see, things to try, and stories worth telling.</p></div>
-        <div class="wish"><span class="icon">😄</span><h3>Endless laughter</h3><p>The kind that makes your cheeks hurt and your day better.</p></div>
-        <div class="wish"><span class="icon">🌙</span><h3>Calm nights</h3><p>Quiet skies, a clear mind, and dreams that feel like home.</p></div>
-        <div class="wish"><span class="icon">🌱</span><h3>Growth</h3><p>Big steps, small wins, and pride in how far you've come.</p></div>
-        <div class="wish"><span class="icon">💛</span><h3>So much love</h3><p>From everyone lucky enough to know you, today and always.</p></div>
-      </div>
-    </section>
-
     <footer>
       <p class="footer-name">Happy Birthday, Roka</p>
-          </footer>
+    </footer>
   </main>
 
+  <!-- Full-size photo view -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lb-close" id="lbClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <figure>
+      <img id="lbImg" alt="" />
+      <figcaption id="lbCaption"></figcaption>
+    </figure>
+  </div>
+
+  <script src="memories.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

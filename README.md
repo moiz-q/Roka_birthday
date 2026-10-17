@@ -6,14 +6,22 @@ A small birthday page with warm autumn colors. Plain HTML, CSS and JavaScript, n
 
 - A few leaves drifting gently in the background
 - An envelope that opens into a personal letter
+- A looping photo carousel of favorite moments, each with a caption (tap a photo to see it full size)
 - A cake with candles to blow out
-- A set of birthday wishes
 
 Works on phones and desktops, and respects the "reduce motion" accessibility setting.
 
 ## Editing the message
 
-Open `index.html` and look for `EDIT YOUR MESSAGE HERE`. Change the paragraphs and the name in the sign-off.
+Open `index.html` and look for `EDIT YOUR MESSAGE HERE`.
+
+## Adding photos to the carousel
+
+1. Upload your photos into the `images` folder.
+2. Open `memories.js` and add one line per photo with its file name and a short caption, for example:
+   `{ photo: "images/beach-day.jpg", caption: "That one beach day" },`
+
+Photos show in the order listed. Until a photo is added, its card shows a placeholder.
 
 ## Publishing on GitHub Pages
 
