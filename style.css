@@ -474,6 +474,7 @@ h1 { line-height: 1; }
   border-radius: 4px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
+.lightbox figcaption:empty { display: none; }
 .lightbox figcaption {
   margin-top: 14px;
   font-family: "Caveat", cursive;

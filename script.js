@@ -359,7 +359,7 @@
     function openLightbox(i) {
       const m = memories[i];
       if (!m || cards[i].classList.contains("no-photo")) return;
-      lbImg.src = m.photo;
+      lbImg.src = m.full || m.photo;
       lbImg.alt = m.caption || "";
       lbCaption.textContent = m.caption || "";
       lastFocus = document.activeElement;
