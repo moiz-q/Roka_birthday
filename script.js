@@ -241,6 +241,7 @@
         card.style.opacity = opacity.toFixed(3);
         card.style.zIndex = String(100 - Math.round(ad * 10));
         card.style.pointerEvents = opacity < 0.2 ? "none" : "";
+        card.style.visibility = opacity < 0.01 ? "hidden" : "";
         card.style.filter = ad > 0.5 ? `brightness(${Math.max(0.55, 1 - ad * 0.25).toFixed(2)})` : "";
         card.classList.toggle("active", k === active);
         card.setAttribute("aria-hidden", k === active ? "false" : "true");
@@ -375,6 +376,9 @@
     lbClose.addEventListener("click", closeLightbox);
     lightbox.addEventListener("click", (e) => { if (e.target === lightbox || e.target.tagName === "FIGURE") closeLightbox(); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && lightboxOpen()) closeLightbox(); });
+
+    // older browsers: never let the carousel box itself scroll sideways
+    carouselEl.addEventListener("scroll", () => { carouselEl.scrollLeft = 0; });
 
     window.addEventListener("resize", layout);
     layout();

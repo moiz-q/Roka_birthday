@@ -21,4 +21,9 @@ window.MEMORIES = [
   { photo: "images/moment-8.jpg", full: "images/full/moment-8.jpg", caption: "the typa shi my sleepy ahh would say to u" },
   { photo: "images/moment-9.jpg", full: "images/full/moment-9.jpg", caption: "The only time i've ever had a Super BFF" },
   { photo: "images/moment-10.jpg", full: "images/full/moment-10.jpg", caption: "When shroggy was just a smol lil guy" },
+  { photo: "images/moment-11.jpg", full: "images/full/moment-11.jpg", caption: "" },
+  { photo: "images/moment-12.jpg", full: "images/full/moment-12.jpg", caption: "" },
+  { photo: "images/moment-13.jpg", full: "images/full/moment-13.jpg", caption: "" },
+  { photo: "images/moment-14.jpg", full: "images/full/moment-14.jpg", caption: "" },
+  { photo: "images/moment-15.jpg", full: "images/full/moment-15.jpg", caption: "" },
 ];

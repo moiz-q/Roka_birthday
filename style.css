@@ -328,6 +328,8 @@ h1 { line-height: 1; }
   overflow: hidden;
   outline: none;
 }
+/* clip (unlike hidden) can't be scrolled by focus or scrollIntoView */
+@supports (overflow: clip) { .carousel { overflow: clip; } }
 .carousel:focus-visible .card.active { outline: 2px dashed var(--amber); outline-offset: 6px; }
 
 .track {
