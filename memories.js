@@ -11,9 +11,9 @@
    ========================================================= */
 
 window.MEMORIES = [
-  { photo: "images/moment-1.jpg", full: "images/full/moment-1.jpg", caption: "" },
-  { photo: "images/moment-2.jpg", full: "images/full/moment-2.jpg", caption: "" },
-  { photo: "images/moment-3.jpg", full: "images/full/moment-3.jpg", caption: "" },
-  { photo: "images/moment-4.jpg", full: "images/full/moment-4.jpg", caption: "" },
-  { photo: "images/moment-5.jpg", full: "images/full/moment-5.jpg", caption: "" },
+  { photo: "images/moment-1.jpg", full: "images/full/moment-1.jpg", caption: "i just like this pic lol" },
+  { photo: "images/moment-2.jpg", full: "images/full/moment-2.jpg", caption: "when i drew u as not ugly" },
+  { photo: "images/moment-3.jpg", full: "images/full/moment-3.jpg", caption: "our fav screenshot" },
+  { photo: "images/moment-4.jpg", full: "images/full/moment-4.jpg", caption: "my most used website" },
+  { photo: "images/moment-5.jpg", full: "images/full/moment-5.jpg", caption: "the birthday gift i made 3 months before ur birthday" },
 ];
