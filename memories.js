@@ -16,4 +16,9 @@ window.MEMORIES = [
   { photo: "images/moment-3.jpg", full: "images/full/moment-3.jpg", caption: "our fav screenshot" },
   { photo: "images/moment-4.jpg", full: "images/full/moment-4.jpg", caption: "my most used website" },
   { photo: "images/moment-5.jpg", full: "images/full/moment-5.jpg", caption: "the birthday gift i made 3 months before ur birthday" },
+  { photo: "images/moment-6.jpg", full: "images/full/moment-6.jpg", caption: "" },
+  { photo: "images/moment-7.jpg", full: "images/full/moment-7.jpg", caption: "" },
+  { photo: "images/moment-8.jpg", full: "images/full/moment-8.jpg", caption: "" },
+  { photo: "images/moment-9.jpg", full: "images/full/moment-9.jpg", caption: "" },
+  { photo: "images/moment-10.jpg", full: "images/full/moment-10.jpg", caption: "" },
 ];
