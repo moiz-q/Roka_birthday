@@ -244,7 +244,7 @@
         card.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${rotY}deg)`;
         card.style.opacity = opacity.toFixed(3);
         card.style.zIndex = String(100 - Math.round(ad * 10));
-        card.style.pointerEvents = opacity < 0.2 ? "none" : "";
+        card.style.pointerEvents = opacity < 0.2 ? "none" : "auto";
         card.style.visibility = opacity < 0.01 ? "hidden" : "";
         card.style.filter = ad > 0.5 ? `brightness(${Math.max(0.55, 1 - ad * 0.25).toFixed(2)})` : "";
         card.classList.toggle("active", k === active);
@@ -287,56 +287,69 @@
       if (e.key === "Enter" && e.target === carouselEl) openLightbox(activeIndex());
     });
 
-    // Swipe / drag
-    let dragging = false, moved = false, startX = 0, startY = 0, startPos = 0, lastX = 0, lastT = 0, vel = 0;
+    // Swipe / drag / tap. A press that lifts without swiping is a tap on the
+    // photo the finger came down on. If the page scrolls instead, the browser
+    // cancels the press ("pointercancel"), which never counts as a tap.
+    let pressing = false, dragging = false, startX = 0, startY = 0, startPos = 0, lastX = 0, lastT = 0, vel = 0;
+    let pressCard = null;
+    const DRAG_START = 10; // px of movement before it counts as a swipe or scroll
+
     track.addEventListener("pointerdown", (e) => {
       if (e.button !== undefined && e.button !== 0) return;
-      dragging = true; moved = false;
+      pressing = true; dragging = false;
+      pressCard = e.target.closest(".card");
       startX = lastX = e.clientX; startY = e.clientY;
-      startPos = pos; lastT = performance.now(); vel = 0;
-      target = pos;
+      lastT = performance.now(); vel = 0;
       pauseAuto();
     });
     window.addEventListener("pointermove", (e) => {
-      if (!dragging) return;
-      const dx = e.clientX - startX;
-      if (!moved) {
-        if (Math.abs(dx) < 6) return;
-        // mostly vertical movement: let the page scroll instead
-        if (Math.abs(e.clientY - startY) > Math.abs(dx)) { dragging = false; return; }
-        moved = true;
+      if (!pressing) return;
+      if (!dragging) {
+        const dx = e.clientX - startX, dy = e.clientY - startY;
+        if (Math.abs(dx) < DRAG_START && Math.abs(dy) < DRAG_START) return;
+        // mostly vertical: it's a page scroll, not a swipe
+        if (Math.abs(dy) >= Math.abs(dx)) { pressing = false; return; }
+        dragging = true;
+        startX = lastX = e.clientX;   // start from here so the photo doesn't jump
+        startPos = target = pos;      // pick up wherever the slide currently is
         track.classList.add("dragging");
         try { track.setPointerCapture(e.pointerId); } catch (_) {}
       }
       const now = performance.now();
       vel = (e.clientX - lastX) / Math.max(1, now - lastT);
       lastX = e.clientX; lastT = now;
-      pos = target = startPos - dx / spacing();
+      pos = target = startPos - (e.clientX - startX) / spacing();
       layout();
     });
-    function endDrag(e) {
-      if (!dragging) return;
-      dragging = false;
-      track.classList.remove("dragging");
-      if (!moved) {
-        // a tap: open the middle photo, or bring a side photo to the middle
-        const card = e.target.closest && e.target.closest(".card");
-        if (card) {
-          const i = cards.indexOf(card);
-          if (i === activeIndex()) openLightbox(i); else goTo(i);
-        }
+    function endPress(e) {
+      if (!pressing) return;
+      pressing = false;
+      if (!dragging) {
+        if (e.type === "pointerup" && pressCard) tapCard(pressCard);
         return;
       }
+      dragging = false;
+      track.classList.remove("dragging");
       // a short swipe or quick flick moves one photo; a long drag can move several
       const delta = pos - startPos;
-      const dir = Math.sign(delta);
+      const dir = Math.sign(delta) || -Math.sign(vel);
       let n = 0;
       if (Math.abs(delta) > 0.15 || Math.abs(vel) > 0.35) n = dir * Math.max(1, Math.round(Math.abs(delta)));
       target = Math.round(startPos) + n;
       kick();
     }
-    window.addEventListener("pointerup", endDrag);
-    window.addEventListener("pointercancel", endDrag);
+    window.addEventListener("pointerup", endPress);
+    window.addEventListener("pointercancel", endPress);
+
+    // Tap: open the photo in the middle (or the one it's sliding to),
+    // or bring a side photo to the middle
+    function tapCard(card) {
+      const i = cards.indexOf(card);
+      if (i < 0) return;
+      if (i === activeIndex() || i === mod(Math.round(target), N)) openLightbox(i);
+      else goTo(i);
+      pauseAuto();
+    }
 
     // Gentle auto-advance while the carousel is on screen
     let inView = false, pausedUntil = 0;
@@ -348,7 +361,7 @@
         inView = true;
       }
       setInterval(() => {
-        if (inView && !dragging && !lightboxOpen() && !document.hidden && performance.now() > pausedUntil) step(1);
+        if (inView && !pressing && !lightboxOpen() && !document.hidden && performance.now() > pausedUntil) step(1);
       }, 4500);
       carouselEl.addEventListener("mouseenter", () => { pausedUntil = Infinity; });
       carouselEl.addEventListener("mouseleave", () => { pausedUntil = performance.now() + 2000; });
@@ -359,7 +372,7 @@
     const lbImg = document.getElementById("lbImg");
     const lbCaption = document.getElementById("lbCaption");
     const lbClose = document.getElementById("lbClose");
-    let lastFocus = null;
+    let lastFocus = null, openedAt = 0;
     function lightboxOpen() { return !lightbox.hidden; }
     function openLightbox(i) {
       const m = memories[i];
@@ -369,6 +382,7 @@
       lbCaption.textContent = m.caption || "";
       lastFocus = document.activeElement;
       lightbox.hidden = false;
+      openedAt = performance.now();
       document.body.style.overflow = "hidden";
       lbClose.focus();
     }
@@ -377,8 +391,9 @@
       document.body.style.overflow = "";
       if (lastFocus) lastFocus.focus({ preventScroll: true });
     }
-    lbClose.addEventListener("click", closeLightbox);
-    lightbox.addEventListener("click", (e) => { if (e.target === lightbox || e.target.tagName === "FIGURE") closeLightbox(); });
+    lbClose.addEventListener("click", (e) => { e.stopPropagation(); closeLightbox(); });
+    // ignore the leftover click from the tap that opened it
+    lightbox.addEventListener("click", () => { if (performance.now() - openedAt > 450) closeLightbox(); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && lightboxOpen()) closeLightbox(); });
 
     // older browsers: never let the carousel box itself scroll sideways

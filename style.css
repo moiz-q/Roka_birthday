@@ -217,18 +217,23 @@ h1 { line-height: 1; }
   inset: 0;
   border-radius: 10px;
   background: linear-gradient(160deg, #c8692f, #9c3f1c);
+  z-index: 1;
 }
 .env-paper {
   left: 8%; right: 8%; top: 8%; bottom: 10%;
   background: var(--cream);
   border-radius: 6px;
-  transition: transform 0.6s ease 0.35s;
+  /* animate top/bottom, not transform: a transform animation here made the
+     browser draw the front without its V cut-out while the letter rose */
+  transition: top 0.6s ease 0.35s, bottom 0.6s ease 0.35s;
+  z-index: 2;
 }
 .env-front {
   inset: 0;
   border-radius: 10px;
   background: linear-gradient(160deg, #d97a38, #b5481f);
   clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+  z-index: 3;
 }
 .env-flap {
   left: 0; right: 0; top: 0;
@@ -237,7 +242,7 @@ h1 { line-height: 1; }
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform-origin: top center;
   transition: transform 0.6s ease;
-  z-index: 2;
+  z-index: 4;
 }
 .env-seal {
   left: 50%; top: 58%;
@@ -252,14 +257,19 @@ h1 { line-height: 1; }
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #a83a28, var(--maroon) 70%);
   box-shadow: 0 3px 8px rgba(0,0,0,0.35), inset 0 -2px 4px rgba(0,0,0,0.3);
-  z-index: 3;
+  z-index: 5;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .envelope.open { animation: none; }
-.envelope.open .env-flap { transform: rotateX(180deg); z-index: 0; }
+/* the flap drops behind the letter once it's edge-on (halfway through the flip) */
+.envelope.open .env-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+  transition: transform 0.6s ease, z-index 0s linear 0.3s;
+}
 .envelope.open .env-seal { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
-.envelope.open .env-paper { transform: translateY(-38%); }
+.envelope.open .env-paper { top: -23%; bottom: 41%; }
 
 @keyframes wiggle {
   0%, 80%, 100% { rotate: 0deg; }
@@ -360,14 +370,20 @@ h1 { line-height: 1; }
   perspective: 1100px;
   transform-style: preserve-3d;
   touch-action: pan-y;          /* horizontal swipes go to the carousel, vertical ones scroll the page */
+  /* cards pushed back in 3D sit behind the track's own plane; let taps pass
+     through the track so they reach the card instead */
+  pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
   cursor: grab;
 }
 .track.dragging { cursor: grabbing; }
+.card.active { cursor: zoom-in; }
+.track.dragging .card.active { cursor: grabbing; }
 
 .card {
   grid-area: 1 / 1;
+  pointer-events: auto;
   width: var(--card-w);
   margin: 0;
   padding: 12px 12px 0;
