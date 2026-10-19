@@ -132,7 +132,11 @@
       envelope.hidden = true;
       envelope.style.display = "none";
       letterCard.hidden = false;
-      letterCard.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+      // measure the letter's resting position (without its entrance animation)
+      letterCard.style.animation = "none";
+      const top = letterCard.getBoundingClientRect().top + window.scrollY;
+      letterCard.style.animation = "";
+      window.scrollTo({ top: Math.max(0, top - 20), behavior: reduceMotion ? "auto" : "smooth" });
     }, reduceMotion ? 0 : 1100);
   });
 
@@ -387,7 +391,7 @@
   /* =======================================================
      Reveal sections on scroll
      ======================================================= */
-  const toReveal = document.querySelectorAll(".section h2, .section .hint, .envelope-wrap, .moments .lead, .carousel, .cake-stage, footer");
+  const toReveal = document.querySelectorAll(".intro p, .section h2, .section .hint, .envelope-wrap, .moments .lead, .carousel, .cake-stage, footer");
   if ("IntersectionObserver" in window && !reduceMotion) {
     toReveal.forEach((el) => el.classList.add("reveal"));
     const io = new IntersectionObserver((entries) => {
