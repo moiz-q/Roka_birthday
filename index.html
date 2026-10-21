@@ -145,6 +145,13 @@
     </footer>
   </main>
 
+  <!-- Background music (starts on the first tap; browsers block sound before that) -->
+  <audio id="bgMusic" src="audio/ambience.mp3" loop preload="auto"></audio>
+  <button class="music-btn" id="musicBtn" type="button" aria-label="Mute music" title="Mute music">
+    <svg class="icon-on" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <svg class="icon-off" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M16 9.5l5 5M21 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+  </button>
+
   <!-- Full-size photo view -->
   <div class="lightbox" id="lightbox" hidden>
     <button class="lb-close" id="lbClose" aria-label="Close">

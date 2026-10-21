@@ -404,6 +404,82 @@
   })();
 
   /* =======================================================
+     Background music
+     ======================================================= */
+  (function setupMusic() {
+    const music = document.getElementById("bgMusic");
+    const btn = document.getElementById("musicBtn");
+    if (!music || !btn) return;
+
+    const KEY = "roka-music-muted";
+    let muted = false;
+    try { muted = localStorage.getItem(KEY) === "1"; } catch (_) {}
+    let playing = false, pending = false, fadeTimer = 0;
+
+    function render() {
+      btn.classList.toggle("muted", muted);
+      const label = muted ? "Play music" : "Mute music";
+      btn.setAttribute("aria-label", label);
+      btn.title = label;
+    }
+
+    // gentle volume fades (phones like iPhone ignore volume; the file itself is mixed soft)
+    function fadeTo(v, ms, done) {
+      clearInterval(fadeTimer);
+      const from = music.volume, t0 = performance.now();
+      fadeTimer = setInterval(() => {
+        const k = Math.min(1, (performance.now() - t0) / ms);
+        try { music.volume = from + (v - from) * k; } catch (_) {}
+        if (k >= 1) { clearInterval(fadeTimer); if (done) done(); }
+      }, 50);
+    }
+
+    function start() {
+      if (muted || playing || pending) return;
+      pending = true;
+      try { music.volume = 0; } catch (_) {}
+      const p = music.play();
+      const ok = () => {
+        pending = false;
+        if (muted) { music.pause(); return; } // muted while it was starting
+        playing = true;
+        fadeTo(1, 2500);
+      };
+      if (p && p.then) p.then(ok).catch(() => { pending = false; }); else ok();
+    }
+    function stop() {
+      if (!playing) return;
+      playing = false;
+      fadeTo(0, 600, () => music.pause());
+    }
+
+    btn.addEventListener("click", () => {
+      muted = !muted;
+      try { localStorage.setItem(KEY, muted ? "1" : "0"); } catch (_) {}
+      render();
+      if (muted) stop(); else start();
+    });
+
+    // Browsers only allow sound after the visitor interacts, so start on the
+    // first tap/click/key anywhere (the mute button handles its own clicks).
+    const kickoff = (e) => {
+      if (btn.contains(e.target)) return;
+      start();
+      if (playing || muted) ["pointerup", "touchend", "click", "keydown"].forEach((t) => document.removeEventListener(t, kickoff, true));
+    };
+    ["pointerup", "touchend", "click", "keydown"].forEach((t) => document.addEventListener(t, kickoff, true));
+
+    // pause in a background tab, resume on return
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) { if (playing) { music.pause(); } }
+      else if (playing && !muted) { music.play().catch(() => {}); }
+    });
+
+    render();
+    start(); // works right away if the browser allows autoplay
+  })();
+
+  /* =======================================================
      Reveal sections on scroll
      ======================================================= */
   const toReveal = document.querySelectorAll(".intro p, .section h2, .section .hint, .envelope-wrap, .moments .lead, .carousel, .cake-stage, footer");
